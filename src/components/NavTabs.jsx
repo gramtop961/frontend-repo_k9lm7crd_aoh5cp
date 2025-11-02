@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { MessageSquareHeart, LineChart, Users, NotebookPen, HandHeart, User } from 'lucide-react';
 
 const tabs = [
@@ -10,11 +10,16 @@ const tabs = [
   { key: 'profile', label: 'Profile', icon: User },
 ];
 
-export default function NavTabs() {
-  const [active, setActive] = useState('chat');
+export default function NavTabs({ active, setActive }) {
+  // Update document hash for accessible navigation and deep-linking
+  useEffect(() => {
+    if (active) {
+      window.history.replaceState(null, '', `#${active}`);
+    }
+  }, [active]);
 
   return (
-    <section className="w-full" id={active}>
+    <section className="w-full">
       <div className="mb-4 flex w-full flex-wrap gap-2 rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200">
         {tabs.map(({ key, label, icon: Icon }) => (
           <button
@@ -25,6 +30,7 @@ export default function NavTabs() {
                 ? 'bg-indigo-600 text-white shadow'
                 : 'text-slate-600 hover:bg-slate-50'
             }`}
+            aria-pressed={active === key}
           >
             <Icon className="h-4 w-4" />
             {label}
@@ -55,7 +61,7 @@ function SectionTitle({ title, subtitle }) {
 
 function ChatPreview() {
   return (
-    <div id="chat">
+    <div>
       <SectionTitle title="AI Mental Health Chat" subtitle="A calming, empathetic space to reflect." />
       <div className="space-y-3">
         <div className="w-fit max-w-[80%] rounded-2xl bg-slate-100 px-4 py-3 text-slate-700">
@@ -74,7 +80,7 @@ function ChatPreview() {
 
 function AnalyticsPreview() {
   return (
-    <div id="analytics">
+    <div>
       <SectionTitle title="Weekly Wellness Analytics" subtitle="Mood trends and check-in frequency" />
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl bg-indigo-50 p-4 text-indigo-800">
@@ -127,12 +133,21 @@ function JournalPreview() {
 }
 
 function DonatePreview() {
+  const openDonate = (amount) => {
+    const url = 'https://buy.stripe.com/test_00g3dA9b66kA0Z6aEE';
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div>
       <SectionTitle title="Support Wellness Wings" subtitle="Keep the platform free and growing" />
       <div className="grid gap-3 sm:grid-cols-4">
         {['₹50','₹100','₹250','Custom'].map((tier) => (
-          <button key={tier} className="rounded-xl border bg-white px-4 py-3 font-medium text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50">
+          <button
+            key={tier}
+            onClick={() => openDonate(tier)}
+            className="rounded-xl border bg-white px-4 py-3 font-medium text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50"
+          >
             {tier}
           </button>
         ))}

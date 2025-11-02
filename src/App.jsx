@@ -1,3 +1,4 @@
+import { useRef, useState, useCallback } from 'react';
 import Hero from './components/Hero';
 import NavTabs from './components/NavTabs';
 import FeatureHighlights from './components/FeatureHighlights';
@@ -6,6 +7,21 @@ import Footer from './components/Footer';
 import { HeartPulse } from 'lucide-react';
 
 function App() {
+  const [activeTab, setActiveTab] = useState('chat');
+  const tabsRef = useRef(null);
+
+  const scrollToTabs = useCallback(() => {
+    if (tabsRef.current) {
+      tabsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  const goToTab = useCallback((tabKey) => {
+    setActiveTab(tabKey);
+    // Delay ensures state update applies before scroll for a smoother feel
+    setTimeout(scrollToTabs, 0);
+  }, [scrollToTabs]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-violet-50">
       {/* Top bar */}
@@ -20,21 +36,23 @@ function App() {
           </div>
         </div>
         <nav className="hidden gap-4 text-sm text-slate-600 sm:flex">
-          <a className="hover:text-slate-900" href="#chat">Chat</a>
-          <a className="hover:text-slate-900" href="#analytics">Analytics</a>
-          <a className="hover:text-slate-900" href="#community">Community</a>
-          <a className="hover:text-slate-900" href="#donate">Donate</a>
+          <button onClick={() => goToTab('chat')} className="hover:text-slate-900">Chat</button>
+          <button onClick={() => goToTab('analytics')} className="hover:text-slate-900">Analytics</button>
+          <button onClick={() => goToTab('community')} className="hover:text-slate-900">Community</button>
+          <button onClick={() => goToTab('donate')} className="hover:text-slate-900">Donate</button>
         </nav>
         <div className="flex items-center gap-2">
-          <button className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Sign in</button>
-          <button className="rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700">Get started</button>
+          <button onClick={() => goToTab('profile')} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Sign in</button>
+          <button onClick={() => goToTab('chat')} className="rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700">Get started</button>
         </div>
       </header>
 
       <main className="mx-auto max-w-6xl space-y-8 px-6 pb-10">
-        <Hero />
+        <Hero onStartChat={() => goToTab('chat')} onViewAnalytics={() => goToTab('analytics')} />
         <FeatureHighlights />
-        <NavTabs />
+        <div ref={tabsRef}>
+          <NavTabs active={activeTab} setActive={setActiveTab} />
+        </div>
         <div id="donate">
           <DonationCallout />
         </div>
