@@ -1,8 +1,8 @@
-import { Sparkles, ShieldCheck, Brain, HeartHandshake } from 'lucide-react';
+import { Sparkles, Shield, Brain, Heart } from 'lucide-react';
 
 const features = [
   {
-    icon: ShieldCheck,
+    icon: Shield,
     title: 'Secure & Private',
     desc: 'Protected accounts and encrypted credentials. Your wellness is confidential.',
     color: 'from-indigo-50 to-blue-50 text-indigo-700',
@@ -14,7 +14,7 @@ const features = [
     color: 'from-purple-50 to-pink-50 text-purple-700',
   },
   {
-    icon: HeartHandshake,
+    icon: Heart,
     title: 'Community Care',
     desc: 'Anonymous posts and replies with kindness-first moderation tools.',
     color: 'from-rose-50 to-amber-50 text-rose-700',

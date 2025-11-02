@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { MessageSquareHeart, LineChart, Users, NotebookPen, HandHeart, User } from 'lucide-react';
+import { MessageCircle, LineChart, Users, Notebook, Heart, User } from 'lucide-react';
 
 const tabs = [
-  { key: 'chat', label: 'Chat', icon: MessageSquareHeart },
+  { key: 'chat', label: 'Chat', icon: MessageCircle },
   { key: 'analytics', label: 'Analytics', icon: LineChart },
   { key: 'community', label: 'Community', icon: Users },
-  { key: 'journal', label: 'Journal', icon: NotebookPen },
-  { key: 'donate', label: 'Donate', icon: HandHeart },
+  { key: 'journal', label: 'Journal', icon: Notebook },
+  { key: 'donate', label: 'Donate', icon: Heart },
   { key: 'profile', label: 'Profile', icon: User },
 ];
 
